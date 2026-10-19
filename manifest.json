@@ -1,0 +1,10 @@
+{
+  "id": "ai-short-drama-assistant",
+  "name": "AI短剧创作助手",
+  "version": "0.2.0",
+  "minAppVersion": "1.4.0",
+  "description": "短剧创作者六模块工具：选题评分与灵感卡、立项检查、单集写作流水线、政策红线快检、46项质检清单、去AI味改写、投稿格式/转小说检查。规则源自 AI短剧创作系统（六大赛道选题引擎、四维评分 v4.8、立项工作流 v3.22、8 类政策红线、46 项问题模板库、台词去AI化与投稿转换规则）。",
+  "author": "AI短剧创作系统",
+  "authorUrl": "https://github.com/zeng198708",
+  "isDesktopOnly": true
+}
