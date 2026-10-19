@@ -1,7 +1,7 @@
 {
   "id": "ai-short-drama-assistant",
   "name": "AI Short Drama Assistant",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "minAppVersion": "1.4.0",
   "description": "短剧创作六模块AI助手：选题评分、立项检查、写作流水线、政策红线快检、46项质检、去AI味改写、投稿与转小说。Six-module assistant: topic scoring, project check, writing pipeline, policy red-line check, 46-item QC, de-AI rewrite, submission & novel conversion.",
   "author": "AI短剧创作系统",

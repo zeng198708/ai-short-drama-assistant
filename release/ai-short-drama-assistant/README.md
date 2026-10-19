@@ -1,6 +1,10 @@
-# AI短剧创作助手（Obsidian 插件）
+# AI Short Drama Assistant
 
-短剧创作者工具插件 v0.2.0 —— 六模块全覆盖，规则源自「AI短剧创作系统」核心资产（六大赛道选题引擎、四维评分 v4.8、立项工作流 v3.22、8 类政策红线、46 项问题模板库、台词去AI化与投稿转换规则）。
+AI Short Drama Assistant is a six-module AI assistant for short-drama creators built for Obsidian. It covers topic scoring, project check, single-episode writing pipeline, policy red-line check, 46-item quality checklist, de-AI rewriting, submission formatting, and short-drama-to-novel conversion. All rules are embedded locally and work offline. Rules are sourced from the AI Short Drama Creation System (six-track topic engine, 4-dimension scoring v4.8, project workflow v3.22, 8 policy red lines, 46-item problem template library, dialogue de-AI rules and submission conversion rules).
+
+## 中文简介
+
+短剧创作者工具插件 —— 六模块全覆盖，规则源自「AI短剧创作系统」核心资产（六大赛道选题引擎、四维评分 v4.8、立项工作流 v3.22、8 类政策红线、46 项问题模板库、台词去AI化与投稿转换规则）。
 
 ## 功能（9 个命令 + 1 个侧栏图标，对齐豆包 Skill v1.1 六模块）
 
