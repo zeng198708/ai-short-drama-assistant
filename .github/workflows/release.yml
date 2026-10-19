@@ -8,6 +8,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      id-token: write
+      attestations: write
 
     steps:
       - uses: actions/checkout@v4
@@ -15,19 +19,26 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Build
-        id: build
+      - name: Build plugin
         run: |
           npm install
           npm run build
       - name: Check file existence
-        id: check_files
-        uses: andstor/file-existence-action@v2
+        run: |
+          test -f main.js && test -f manifest.json && test -f styles.css
+      - name: Generate artifact attestation
+        uses: actions/attest@v4
         with:
-          files: "main.js manifest.json styles.css"
-          fail: true
-      - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: main.js manifest.json styles.css
-          draft: true
+          subject-path: |
+            main.js
+            manifest.json
+            styles.css
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          tag="${GITHUB_REF#refs/tags/}"
+          gh release create "$tag" \
+            --title="$tag" \
+            --draft \
+            main.js manifest.json styles.css
