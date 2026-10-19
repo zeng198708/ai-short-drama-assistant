@@ -78,16 +78,21 @@
 
 ---
 
-## 三、第 2 步：Obsidian Community 提审（开发者面板）
+## 三、第 2 步：Obsidian Community 提审（新社区面板）
 
-1. 打开社区站并登录：https://obsidian.md/plugins （右上角 **Sign in**，用 Obsidian 账号登录；没有则先注册）。
-2. 进入 **Developer dashboard**（开发者面板，登录后可见，管理你的插件/主题与提交）。
-3. 点击 **Connect GitHub account**（连接 GitHub）：
-   - 系统会跳转 GitHub 授权，仅读取你的**用户名和公开仓库列表**，用于验证仓库所有权；
-   - 授权完成后，面板列出你的公开仓库。
-4. **Choose a repo to submit**：选择 `ai-short-drama-assistant`。
-5. **Complete the steps in the dashboard**（按面板表单逐项填写，建议值见下表）。
-6. 提交后系统**立即自动审核**，通常几分钟内出结果；结果会显示在面板与插件详情页的 Review / Scorecard 区。
+> ✅ 正确网址：**https://community.obsidian.md**（不是 obsidian.md/plugins）。登录的是 **Obsidian 账号**（不是 GitHub 账号），没有就按提示注册一个。
+
+1. 打开 https://community.obsidian.md → 右上角 **Sign in** → 用 Obsidian 账号登录。
+2. 登录后自动落在 **Community profile（社区资料页）**，左侧边栏有：Profile（资料）/ Plugins（插件）/ Themes（主题）/ Organizations（组织）/ Community site（返回社区）/ Log out（退出）。——"选择"就在这里，别在首页找。
+3. 在资料页找到 **GitHub** 区块 → 点 **Connect**（连接）→ 跳转 GitHub 授权页，用 `zeng198708` 登录并同意授权（只读取用户名和公开仓库列表）。
+4. 授权后若页面出现 **Available to claim**（可认领）列表 → 勾选 `ai-short-drama-assistant` → **Claim as** 选 Myself → 点 **Claim**（认领，之后它就是你名下的条目）。
+5. 若列表里没有你的仓库（新插件一般不会自动列出）→ 点左侧 **Plugins** → 点 **New plugin** → 填写提交表单：
+   - **GitHub repository URL**：`https://github.com/zeng198708/ai-short-drama-assistant`
+   - **Owner**：选你自己
+   - 勾选同意开发者政策 → 点 **Submit**（提交）
+6. 提交后系统**立即自动审核**，通常几分钟内出结果；结果显示在插件详情页的 Review / Scorecard 区。
+
+> ⚠️ 前置条件：GitHub 仓库**必须已上传成功、且已完成 0.2.0 的 Release 发布**（前面第 1 步做完），否则填了仓库地址也无法通过审核。
 
 ### 3.1 面板填报建议（对照本插件）
 
