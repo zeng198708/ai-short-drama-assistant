@@ -3,7 +3,7 @@
 > 适用：本地验证通过后（selftest 18/18 + 六模块 9 命令全部触发通过），将插件上架到 Obsidian 官方社区库。
 > 现行渠道（2026-05 起）：Obsidian 启用新版「Obsidian Community」目录 + 开发者面板 + 自动化审核，所有新插件统一走该面板，不再走旧版 obsidian-releases PR 流程（旧提交已全部迁移至新面板）。
 > 依据：obsidian.md 官方公告《The future of Obsidian plugins》(2026-05-12) + 官方开发者文档（GitHub Actions 发布指南）。
-> 状态：本地验证 ✅ 已完成 → 本流程为下一步提审操作手册。
+> 状态（2026-10-19 更新）：本地验证 ✅ → GitHub 上传 ✅（4 commits，最新 fd3ca40）→ Actions 自动打包 ✅（绿色，官方最新模板已修复）→ **当前待办：Releases 草稿 → Publish release → 社区站提审提交**。
 
 ---
 
@@ -74,11 +74,21 @@
 - 界面英文对照：Settings=设置；Actions=操作；General=常规；Workflow permissions=工作流权限；Read and write permissions=读写权限；Save=保存。
 
 ### 2.4 打版本标签，触发自动发布（双击脚本即可，免手敲命令）
-1. **双击 `打标签发布v0.2.0.bat`**（材料包根目录），脚本自动完成：创建标签 `0.2.0` → 推送到 GitHub（黑窗口显示 [1/2]→[2/2]）。
-2. 回浏览器：仓库页面顶部菜单 **Actions**（操作）→ 会看到名为 "Release Obsidian plugin" 的工作流在运行（橙色=进行中，绿色✓=成功）。
-3. 跑完后（约 1-2 分钟）→ 仓库右侧栏 **Releases**（发行版）→ 出现一个 **Draft**（草稿）版本，已自动附带 `main.js`、`manifest.json`、`styles.css` 三个附件。
+1. **双击 `打标签发布v0.2.0.bat`**（材料包根目录），脚本自动完成：**重建标签 `0.2.0`**（先删旧标签再打新标签，确保指向最新提交）→ 推送到 GitHub（黑窗口显示 [1/2]→[2/2]）。
+2. 回浏览器刷新仓库页面：顶部一排菜单里找 **Actions**（操作）——位置是 `Code | Issues | Pull requests | Agents | Actions | Projects | ...`，**第 5 个**就是它。点进去会看到名为 "Release Obsidian plugin" 的工作流运行记录。
+3. 约 1-2 分钟跑完：**绿色对勾 = 打包成功**（橙色 = 进行中，红色× = 失败）。成功后 → 回仓库主页，**右侧栏 Releases（发行版）** → 出现一个 **Draft**（草稿）版本，已自动附带 `main.js`、`manifest.json`、`styles.css` 三个附件。
 4. 点草稿右侧 **Edit**（铅笔图标）→ 填 Release notes（版本说明，如"首个社区版：六模块 9 命令，选题/立项/写作/质检/改写/投稿全流程"）→ 点 **Publish release**（发布版本）。
-- 界面英文对照：Actions=操作；Releases=发行版；Draft=草稿；Edit=编辑；Publish release=发布版本；Actions 页绿色对勾=成功、红色×=失败（点进去看哪一步报错）。
+5. **发布成功后**才去第 2 步提审（第 3 节）。发布未完成就去提审，审核必然失败。
+
+- 界面英文对照：Actions=操作；Releases=发行版；Draft=草稿；Edit=编辑；Publish release=发布版本；绿色对勾=成功、红色×=失败。
+
+> ⚠️ **Actions 打包失败的排查实录（2026-10-19，已全部解决）**
+> 现象：点打标签脚本后 Actions 记录 18-19 秒就红×。根因链（一次比一次旧版本组件被 GitHub 停用）：
+> 1. **旧版 `actions/checkout@v3` + `actions/setup-node@v3`**：基于 Node16，GitHub 已停用 Node16 的 Action，一跑必挂（第 1 次失败）→ 已升级 v4。
+> 2. **`andstor/file-existence-action@v2`**：同样是 Node16 旧组件（第 2、3 次失败）→ 已删除，改用纯命令行检查。
+> 3. 最终方案 = **官方最新模板**：checkout@v4 + setup-node@v4（Node20）+ 纯 shell 检查文件存在 + `actions/attest@v4` 生成**产物来源证明（artifact attestation，提审审核必需）** + `gh release create` 建草稿。
+> 结论：**以后不要手动改 `.github\workflows\release.yml` 里的组件版本**；如遇新失败，把红色步骤截图发我处理即可。当前模板已按 2026-10 官方文档校准。
+> 另注意：Actions 默认权限可能是只读，若发布步骤报权限错误，去 2.3 开启 **Read and write permissions**。
 
 > 手动替代方案（不用 Actions）：直接仓库 **Releases → Create a new release**（新建发行版），Tag 填 `0.2.0`，标题填 `0.2.0`，把 `main.js`、`manifest.json`、`styles.css` 三个文件拖入附件区后点 **Publish release** 发布。效果等同。
 
@@ -108,7 +118,7 @@
 | 描述（Description） | 沿用 manifest.json 的 description，建议再附英文一句话：`Six-module AI assistant for short-drama creators: topic scoring, project check, writing pipeline, policy red-line check, 46-item QC, de-AI rewrite, submission & novel conversion.` | 目录按关键词搜索，中英双语覆盖更广 |
 | 分类（Category） | AI / Writing / Commands 等（面板提供多选标签） | 让用户能在对应分类下发现 |
 | 定价标签 | **Free** | 插件本身免费且不绑定付费服务；若后续接入需付费的 API 服务，须改为 **Optional payments** |
-| 作者 / Author URL | 作者名填个人名（如老曾）；Author URL 填 GitHub 主页或官网链接 | manifest.json 中 `authorUrl` 目前为空，建议一并补上再发布 |
+| 作者 / Author URL | 作者名填个人名（如老曾）；Author URL 填 `https://github.com/zeng198708` | manifest.json 中 `authorUrl` 已填 GitHub 主页，面板里保持一致即可 |
 | 截图 / 预览图 | 上传 2-3 张：评分面板弹窗、红线快检弹窗、生成的文件清单页面（本机已有验证截图可复用） | 详情页展示，直接影响用户安装意愿 |
 
 ---
@@ -161,12 +171,15 @@
 
 | 物料 | 位置 | 状态 |
 |---|---|---|
-| 插件四件套 | `obsidian插件\release\ai-short-drama-assistant\`（main.js 44,782B / manifest 604B / README 3,454B / styles 1,301B） | ✅ 就绪 |
-| 发布压缩包 | `obsidian插件\04_发布包\AI短剧创作助手-obsidian-v0.2.0.zip`（15,542B） | ✅ 就绪 |
-| 发布工作流 | `obsidian插件\.github\workflows\release.yml` | ✅ 已生成（官方模板） |
+| 插件四件套 | `obsidian插件\release\ai-short-drama-assistant\`（main.js / manifest.json / README.md / styles.css） | ✅ 就绪 |
+| 发布压缩包 | `04_发布包\Obsidian插件提审材料包_v0.2.0\01_插件安装包\AI短剧创作助手-obsidian-v0.2.0.zip`（15,688B，manifest 已改英文名） | ✅ 就绪 |
+| 发布工作流 | `obsidian插件\.github\workflows\release.yml`（官方 2026 最新模板：v4 + Node20 + attestation） | ✅ 已修复并上传 |
 | 验证证据 | `obsidian插件\六模块触发验证清单.md`（9 命令全部通过） | ✅ 已完成 |
 | 示例截图 | 评分面板 / 红线快检 / 生成文件页面（验证时已截图留存） | ✅ 可作商店预览图 |
-| Git 仓库 / GitHub 账号 | — | ⬜ 待用户操作（本流程第 1-2 步） |
+| GitHub 仓库 | `https://github.com/zeng198708/ai-short-drama-assistant`（Public，4 commits，fd3ca40） | ✅ 上传完成 |
+| Actions 自动打包 | 仓库顶部 Actions → Release Obsidian plugin | ✅ 绿色通过 |
+| Releases 发布 | 仓库右侧 Releases → Draft 草稿 → 填说明 → Publish | ⬜ **当前待办** |
+| 社区站提审 | https://community.obsidian.md → Plugins → New plugin → Submit | ⬜ 待 Release 发布后提交 |
 
 ---
 
