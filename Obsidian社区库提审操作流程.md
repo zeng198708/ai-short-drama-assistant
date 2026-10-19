@@ -57,6 +57,12 @@
 > - 黑窗口报「git 不是内部或外部命令」：脚本已内置 Git 路径兜底（`D:\Git\Git\cmd`），正常情况下不会出现；若仍出现，把报错内容发我处理。
 > - 两个脚本都用完后，黑窗口最后会显示 `请按任意键继续`，按任意键即可关闭。
 
+#### 网络连不上 GitHub 怎么办（已实测的有效方案）
+> 现象：黑窗口反复报 `Failed to connect to github.com:443` / `Connection was reset`（国内访问 GitHub 的默认线路常被断）。脚本已内置自动重试 5 次，若仍失败：
+1. 双击桌面 **`一键修复GitHub连接.bat`** → 弹管理员确认框点「是」→ 看到「修复完成」。原理：把 GitHub 域名固定解析到可达的香港节点 `20.205.243.166`（写入系统 hosts），绕过被断线路。
+2. 重新双击 `一键上传到GitHub.bat`，即可正常推送。
+3. 若换网络后仍失败：改用手机热点网络再试；或过几分钟再双击（GitHub 连接时好时坏，多试几次）。
+
 #### 备用（网页上传，只适合补传/修改单个文件，不适合首次上传整个插件）
 - 首次整体上传请勿用网页（无法传文件夹）。
 - 后续补传单个文件（如只改了 `README.md`）：仓库页面 → **Add file**（右上角）→ **Upload files** → 把文件拖入虚线框 → 页面底部 **Commit changes**（绿色按钮，提交）→ 完成。
@@ -98,7 +104,7 @@
 
 | 字段 | 建议填写 | 说明 |
 |---|---|---|
-| 插件显示名 | `AI短剧创作助手` | 中文名利于国内用户搜索；如担心英文目录检索，可在描述里补充英文关键词 |
+| 插件显示名 | `AI Short Drama Assistant` | 目录要求英文命名（中文名会被拒，已实测报错）；描述里可含中文关键词便于国内搜索 |
 | 描述（Description） | 沿用 manifest.json 的 description，建议再附英文一句话：`Six-module AI assistant for short-drama creators: topic scoring, project check, writing pipeline, policy red-line check, 46-item QC, de-AI rewrite, submission & novel conversion.` | 目录按关键词搜索，中英双语覆盖更广 |
 | 分类（Category） | AI / Writing / Commands 等（面板提供多选标签） | 让用户能在对应分类下发现 |
 | 定价标签 | **Free** | 插件本身免费且不绑定付费服务；若后续接入需付费的 API 服务，须改为 **Optional payments** |
